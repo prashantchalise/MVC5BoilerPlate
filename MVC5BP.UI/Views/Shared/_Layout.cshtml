@@ -1,0 +1,223 @@
+﻿@using MVC5BP.UI
+
+<!DOCTYPE html>
+<html data-ng-app="RolpoApp">
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<title>@ViewData["Title"] :: A product of Rolpo</title>
+	<link rel="shortcut icon" type="image/icon" href="~/images/favicon.ico" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<!-- Bootstrap 3.3.7 -->
+	<link href="~/adminlte2.4.5/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<!-- Font Awesome -->
+	<link href="~/adminlte2.4.5/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<!-- Ionicons -->
+	<link href="~/adminlte2.4.5/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+	<!-- jvectormap -->
+	<link href="~/adminlte2.4.5/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+	<!-- Theme style -->
+	<link href="~/adminlte2.4.5/css/AdminLTE.css" rel="stylesheet" />
+	<!-- AdminLTE Skins. Choose a skin from the css/skins
+		 folder instead of downloading all of them to reduce the load. -->
+	<link href="~/adminlte2.4.5/css/skins/_all-skins.css" rel="stylesheet" />
+	@*<link href="~/lib/angular-ui-select/dist/select.min.css" rel="stylesheet" />
+		<link href="~/lib/iCheck/all.css" rel="stylesheet" />
+		<link href="~/css/rolpo_custom.css" rel="stylesheet" />*@
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<!-- Google Font -->
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+	@RenderSection("css", required: false)
+
+</head>
+<body class="hold-transition sidebar-mini skin-green-light" ng-cloak>
+	<div class="wrapper">
+		<header class="main-header">
+			<!-- Logo -->
+			<a @Url.Action("Dashboard", "Home") class="logo">
+				<!-- mini logo for sidebar mini 50x50 pixels -->
+				<span class="logo-mini"><b>I</b>MS</span>
+				<!-- logo for regular state and mobile devices -->
+				<span class="logo-lg"><b>ROLPO-</b>TECH</span>
+			</a>
+			<!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+
+                    <a href="javascript:;" onclick="javascript:toggleFullScreen()" 
+                       style="float: left; 
+                        color:white;
+                        background-color: transparent; 
+                        background-image: none;
+                        padding: 15px 15px;">
+                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                    </a>
+
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning">0</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 0 notifications</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-aqua"></i> Notification Binding is on progress.. Sorry for the inconvenience.
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">View all</a></li>
+                            </ul>
+                        </li>
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        <li class="dropdown tasks-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-flag-o"></i>
+                                <span class="label label-danger">0</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 0 tasks</li>
+                                 
+                                <li class="footer">
+                                    <a href="/task">View all tasks</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+
+ 
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <!--
+               <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>
+            -->
+                    </ul>
+                </div>
+            </nav>
+		</header>
+		<!-- Left side column. contains the logo and sidebar -->
+		<aside class="main-sidebar">
+			<!-- sidebar: style can be found in sidebar.less -->
+			<section class="sidebar">
+				<!-- Sidebar user panel -->
+				<div class="user-panel">
+					<div class="pull-left image">
+						<img src="~/images/user.png" class="img-circle" alt="User Image">
+					</div>
+					<div class="pull-left info">
+						<p>
+							<span>Hello User!</span>
+						</p>
+
+						<a href="/Manage"><i class="fa fa-circle text-success"></i> Online</a>
+					</div>
+
+				</div>
+				<hr />
+				<!-- search form -->
+				@*<form action="#" method="get" class="sidebar-form">
+						<div class="input-group">
+							<input type="text" name="q" class="form-control" placeholder="Search...">
+							<span class="input-group-btn">
+								<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+							</span>
+						</div>
+					</form>*@
+				<!-- /.search form -->
+				<!-- sidebar menu: : style can be found in sidebar.less -->
+				<ul class="sidebar-menu" data-widget="tree">
+					<li class="header">MAIN NAVIGATION</li>
+					<li data-classId="Index"><a href="@Url.Action("Index","Home")" alt="Dashboard"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
+
+				</ul>
+			</section>
+			<!-- /.sidebar -->
+		</aside>
+
+		@RenderBody()
+
+
+
+
+		<footer class="main-footer">
+			<div class="pull-right hidden-xs">
+				<b>Version</b> <span> 1.0</span>
+			</div>
+			<strong>MVC5-BoilerPlate</strong> Product of <a href="http://www.rolpotech.com">Rolpo</a>
+		</footer>
+	</div>
+
+	<!-- ./wrapper -->
+	<!-- jQuery 3 -->
+	<script src="~/adminlte2.4.5/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap 3.3.7 -->
+	<script src="~/adminlte2.4.5/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- FastClick -->
+	<script src="~/adminlte2.4.5/fastclick/lib/fastclick.js"></script>
+	<!-- AdminLTE App -->
+	<script src="~/adminlte2.4.5/js/adminlte.min.js"></script>
+	<!-- Sparkline -->
+	<script src="~/adminlte2.4.5/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+
+	<script type="text/javascript">
+		var serviceBase = '@System.Configuration.ConfigurationManager.AppSettings["BASEURL"].ToString()';
+	</script>
+
+
+	<script type="text/javascript" src="~/lib/angular/angular.min.js"></script>
+	<script src="~/lib/angular-sanitize/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	@*<script src="~/lib/angular-ui-select/dist/select.min.js"></script>
+	<script src="~/lib/iCheck/icheck.min.js"></script>*@
+
+	<script src="~/js/app.js"></script>
+
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			try {
+				//Set Menus
+				$('[data-classid]').removeClass('active');
+				$('[data-classid="@ViewBag.Current"]').addClass('active').closest("li.treeview").addClass('active');
+				$('[data-classid="@ViewBag.Current"]').parent().parent().closest("li.treeview").addClass('active');
+				$('[data-classid="@ViewBag.Current"]').parent().parent().parent().closest("li.treeview").addClass('active');
+ 			} catch (e) { }
+
+		});
+
+	</script> 
+
+ 
+	@RenderSection("scripts", required: false)
+
+
+	<script type="text/ng-template" id="customModalPopup">
+		@{Html.RenderPartial("~/views/shared/_Modal.cshtml");}
+	</script>
+ 
+</body>
+
+</html>

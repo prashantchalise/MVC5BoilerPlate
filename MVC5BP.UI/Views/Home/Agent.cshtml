@@ -1,0 +1,228 @@
+﻿<!-- Auto Page By: Prashant -->
+<!-- Created On: 10/07/2020 -->
+<!-- HTML for Agent -->
+@{
+	ViewData["Title"] = "Agent List:: Rolpo";
+	ViewBag.Current = "Main_Agent";
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" data-ng-controller='agentController'>
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			List of Agent
+			<small>Version 1.0</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+			<li><a href="@Url.Action("Index", "Home")"><i class="fa fa-money"></i> Agent</a></li>
+			<li class="active">List of Agent</li>
+		</ol>
+	</section>
+	<!-- Main content -->
+	<section class="content">
+		<!-- Info boxes -->
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="alert alert-rolpo alert-dismissable" style='display:none;' id="Agent_alert"></div>
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+		<!-- Main row -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-info">
+					<div class="box-header with-border">
+						<div class="box-success clearfix">
+							<a class="btn btn-sm btn-info btn-flat pull-left" href="javascript:; " data-ng-click="OpenAgentSaveDialog()">Add new Agent</a>
+						</div><!-- /.box-success -->
+					</div><!-- /.box-header -->
+					<div class="box-body">
+						<div class="box">
+							<div class="box-header with-border">
+								<h3 class="box-title">Filter</h3>
+							</div><!-- /.box-header -->
+							<!-- form start -->
+							<div class="box-body">
+								<table class="table table-responsive table-striped">
+									<tr>
+										<td class="hidden-xs">AgentName:</td>
+										<td><input type="text" class="form-control" ng-enter="GetAgentByFilter()" data-ng-model="tbfilter.AgentName" placeholder="AgentName" /></td>
+										<th class="hidden-xs">
+											<button type="submit" class="btn btn-primary btn-flat" data-ng-click="GetAgentByFilter()">Filter</button>
+											<button type="submit" class="btn btn-warning btn-flat" data-ng-click="ResetAgentFilter()">Clear</button>
+										</th>
+									<tr>
+								</table>
+							</div><!-- /.box-body -->
+						</div><!-- /.box for filter-->
+						<div class="row">
+							<div class="col-sm-12 table-responsive">
+								<table class="table table-bordered table-striped table-font-size">
+									<thead>
+										<tr class="bg-green-gradient">
+											<th>AgentName</th>
+											<th>AgentShortCode</th>
+											<th>Address1</th>
+											<th>Address2</th>
+											<th>Phone1</th>
+											<th>Phone2</th>
+											<th>PrimaryContactEmail</th>
+											<th>AgentInfo</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody ng-show="agents.length > 0">
+										<tr ng-repeat="agent in agents">
+											<td>{{agent.AgentName}}</td>
+											<td>{{agent.AgentShortCode}}</td>
+											<td>{{agent.Address1}}</td>
+											<td>{{agent.Address2}}</td>
+											<td>{{agent.Phone1}}</td>
+											<td>{{agent.Phone2}}</td>
+											<td>{{agent.PrimaryContactEmail}}</td>
+											<td>{{agent.AgentInfo}}</td>
+											<td>
+												<a href="javascript:;" data-ng-click="OpenAgentUpdateDialog(agent.AgentId);" class="btn btn-info btn-xs btn-flat" title="Edit"><i class="fa fa-edit"></i></a>
+												<a href="javascript:;" data-ng-click="DeleteAgent(agent.AgentId);" class="btn btn-danger btn-xs btn-flat" title="Delete"><i class="fa fa-trash"></i></a>
+											</td>
+										</tr>
+									</tbody>
+									<tr data-ng-hide="agents.length > 0">
+										<td colspan="9" class="text-center">
+											<p>No records found.</p>
+										</td>
+									</tr>
+									<tfoot>
+										<tr>
+											<th>AgentName</th>
+											<th>AgentShortCode</th>
+											<th>Address1</th>
+											<th>Address2</th>
+											<th>Phone1</th>
+											<th>Phone2</th>
+											<th>PrimaryContactEmail</th>
+											<th>AgentInfo</th>
+											<th>Actions</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div><!-- /.row -->
+
+						<div class="row">
+							<div class="col-sm-2 hidden-xs" data-ng-show="AgentPageInfo.Has_record">
+								<ul class="pagination no-margin pull-left">
+									<li>
+										<select data-ng-model="tbfilter.PageSize" data-ng-change="OnAgentPageSizeChanged()">
+											<option value="10">10</option>
+											<option value="20">20</option>
+											<option value="30">30</option>
+										</select>
+									</li>
+								</ul>
+							</div>
+							<div class="col-sm-4 hidden-xs" data-ng-show="AgentPageInfo.Has_record">
+								<div>Showing <b>{{AgentPageInfo.PageStart}}</b> to <b>{{AgentPageInfo.PageEnd}}</b> of <b>{{AgentPageInfo.TotalItems}}</b> entries</div>
+							</div>
+							<div class="col-sm-6" data-ng-show="AgentPageInfo.Has_record">
+								<uib-pagination total-items="AgentPageInfo.TotalItems" class="pagination  no-margin pull-right" ng-model="tbfilter.PageNumber" ng-change="OnAgentPageChanged()" items-per-page="tbfilter.PageSize"></uib-pagination>
+							</div>
+						</div><!-- /.row -->
+
+					</div><!-- /.box-body -->
+					<div class="overlay" ng-show="loading">
+						<i class="fa fa-refresh fa-spin"></i>
+					</div>
+				</div><!-- /.box-info /.box -->
+			</div>
+		</div><!-- /.row  Main row ends here..-->
+	</section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+
+<script type="text/ng-template" id="customUpdateAgent">
+	@*@{Html.RenderPartial("~/views/shared/_agent.cshtml");}*@
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-ng-click="cancelEditing()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{ agentActionTitle }}</h4>
+			</div>
+			<form role="form" name="formagent" class="form-horizontal" ng-submit="CreateUpdateAgent(formagent,agent.AgentId);" novalidate>
+				<fieldset ng-disabled="agent_loading">
+					<div class="modal-body">
+						<div class="box-body">
+							<div class="alert alert-rolpo alert-dismissable" style='display:none;' id="Agent_AddEditAlert"></div>
+							<div class="form-group" ng-class="{ 'has-error' : (formagent.tbAgentName.$invalid && !formagent.tbAgentName.$pristine) || invalid }">
+								<label class="control-label col-sm-3">AgentName:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="AgentName" data-ng-model="agent.AgentName" name="tbAgentName" required="" />
+									<div ng-show="formagent.$submitted || formagent.tbAgentName.$touched">
+										<p class="help-block" ng-show="formagent.tbAgentName.$error.required">AgentName is required.</p>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{ 'has-error' : (formagent.tbAgentShortCode.$invalid && !formagent.tbAgentShortCode.$pristine) || invalid }">
+								<label class="control-label col-sm-3">AgentShortCode:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="AgentShortCode" data-ng-model="agent.AgentShortCode" name="tbAgentShortCode" required="" />
+									<div ng-show="formagent.$submitted || formagent.tbAgentShortCode.$touched">
+										<p class="help-block" ng-show="formagent.tbAgentShortCode.$error.required">AgentShortCode is required.</p>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3">Address1:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Address1" data-ng-model="agent.Address1" name="tbAddress1" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3">Address2:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Address2" data-ng-model="agent.Address2" name="tbAddress2" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3">Phone1:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Phone1" data-ng-model="agent.Phone1" name="tbPhone1" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3">Phone2:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Phone2" data-ng-model="agent.Phone2" name="tbPhone2" />
+								</div>
+							</div>
+							<div class="form-group" ng-class="{ 'has-error' : (formagent.tbPrimaryContactEmail.$invalid && !formagent.tbPrimaryContactEmail.$pristine) || invalid }">
+								<label class="control-label col-sm-3">PrimaryContactEmail:</label>
+								<div class="col-sm-9">
+									<input type="email" class="input-sm form-control" data-ng-model="agent.PrimaryContactEmail" placeholder="PrimaryContactEmail" />
+									<div ng-show="formagent.$submitted || formagent.tbPrimaryContactEmail.$touched">
+										<p class="help-block" ng-show="formagent.tbPrimaryContactEmail.$error.required">PrimaryContactEmail is required.</p>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3">AgentInfo:</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="AgentInfo" data-ng-model="agent.AgentInfo" name="tbAgentInfo" />
+								</div>
+							</div>
+						</div><!-- End of box-body -->
+					</div><!-- End of modal-body -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default pull-left btn-flat" ng-disabled="agent_loading" ng-click="cancelEditing()">Cancel</button>
+						<img src="@Url.Content("~/images/load.gif")" ng-show="agent_loading" />
+						<button type="submit" class="btn btn-primary btn-flat" ng-disabled="agent_loading">Save</button>
+					</div>
+				</fieldset>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</script>
+@section Scripts {
+
+	<script src="~/lib/angController/agent/agentController.js"></script>
+}
