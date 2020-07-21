@@ -13,9 +13,7 @@ namespace MVC5BP.Model
 
     public interface IContext
     {
-        DbSet<Agent> Agent { get; set; }
-
-
+ 
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 		ResultsList CallSP(StoredProc procedure, IEnumerable<SqlParameter> parms = null);
@@ -28,8 +26,7 @@ namespace MVC5BP.Model
     public class RolpoContext : DbContext, IContext
     {
 
-        public DbSet<Agent> Agent { get; set; }
-
+ 
         public RolpoContext()
 			: base("Name=RolpoContext")
 		{

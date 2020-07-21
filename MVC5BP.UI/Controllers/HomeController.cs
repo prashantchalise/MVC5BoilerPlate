@@ -19,7 +19,9 @@ namespace MVC5BP.UI.Controllers
 			return View();
 		}
 
-        public ActionResult Agent()
+
+        [HttpGet]
+        public ActionResult CodeGen()
         {
             return View();
         }

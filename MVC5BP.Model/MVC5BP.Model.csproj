@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agent\Agent.cs" />
     <Compile Include="base\AuditableEntity.cs" />
     <Compile Include="base\CodeFirstStoredProc.cs" />
     <Compile Include="base\Entity.cs" />

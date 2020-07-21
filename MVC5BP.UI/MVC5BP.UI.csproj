@@ -57,6 +57,9 @@
     <Reference Include="Autofac.Integration.WebApi, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.WebApi2.5.0.0\lib\net461\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
+    <Reference Include="CodeGen">
+      <HintPath>..\CodeGen-Referecne\CodeGen.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -166,7 +169,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\API\AgentAPIController.cs" />
     <Compile Include="Controllers\API\HomeAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Modules\EFModule.cs" />
@@ -1715,8 +1717,13 @@
     <Content Include="images\user.png" />
     <Content Include="js\app.js" />
     <Content Include="lib\angController\agent\agentController.js" />
+    <Content Include="lib\angController\CodeGen\CodeGenController.js" />
     <Content Include="lib\angular-bootstrap\ui-bootstrap-tpls.min.js" />
     <Content Include="lib\angular-sanitize\angular-sanitize.min.js" />
+    <Content Include="lib\angular-ui-select\dist\select.css" />
+    <Content Include="lib\angular-ui-select\dist\select.js" />
+    <Content Include="lib\angular-ui-select\dist\select.min.css" />
+    <Content Include="lib\angular-ui-select\dist\select.min.js" />
     <Content Include="lib\angular\angular.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1733,7 +1740,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_Modal.cshtml" />
-    <Content Include="Views\Home\Agent.cshtml" />
+    <Content Include="Views\Home\CodeGen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

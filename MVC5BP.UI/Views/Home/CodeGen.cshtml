@@ -1,0 +1,209 @@
+﻿
+@{
+	ViewData["Title"] = "Code generator for Rolpo :: A product of Rolpo";
+	ViewBag.Current = "RolpocodeGenerator";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" data-ng-controller="codegenController">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Code Generator
+ 		</h1>
+		<ol class="breadcrumb">
+			<li><a asp-action="Index" asp-controller="Home"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Dashboard</li>
+		</ol>
+	</section>
+	<!-- Main content -->
+	<section class="content">
+		<!-- Info boxes -->
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+			</div><!-- /.col -->
+
+		</div><!-- /.row -->
+		<!-- Main row -->
+
+
+		<div class="row">
+			<div class="col-xs-12">
+
+
+				<div class="box box-solid">
+					<div class="box-header with-border">
+						<h3 class="box-title">Generate Code Step Wise</h3>
+					</div><!-- /.box-header -->
+					<div class="box-body">
+						<div class="box-group" id="accordion">
+							<!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+							<div class="panel box box-primary">
+								<div class="box-header with-border">
+									<h4 class="box-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+											Select Table
+										</a>
+									</h4>
+								</div>
+								<div id="collapseOne" class="panel-collapse collapse in">
+									<div class="row">
+										<div class="col-md-8">
+											<form class="form-horizontal" name="frmSelectTable" novalidate ng-submit="CreateUpdateGulluPost(gullupost.PostId);">
+												<div class="alert alert-danger alert-dismissable" ng-show="errorMsg">
+													<strong>Error!</strong> {{errorMsg}}
+													<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+												</div>
+
+												<div class="form-group" ng-class="{ 'has-error' : frmSelectTable.tableNameId.$invalid && !frmSelectTable.tableNameId.$pristine }">
+													<label class="col-md-2 control-label">Select Table:</label>
+													<div class="col-md-4">
+														<select ng-model="tableNameId" class="form-control" name="cgTableNames"
+																ng-options="item.Value as item.Name for item in ddlTableNames"
+																required=""></select>
+
+														<div ng-show="frmSelectTable.$submitted || frmSelectTable.tableNameId.$touched">
+															<p class="help-block" ng-show="frmSelectTable.tableNameId.$error.required">Table Name is required.</p>
+														</div>
+
+													</div>
+													<div class="col-md-2">
+														<button type="submit" class="btn-primary btn" ng-click="LoadTableColumns();" ng-disabled="frmSelectTable.$invalid">Go!</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel box box-danger">
+								<div class="box-header with-border">
+									<h4 class="box-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+											Modify Table
+										</a>
+									</h4>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse">
+									<div class="box-body">
+										<table class="table table-striped table-hover">
+											<thead>
+												<tr>
+													<th>Column Name</th>
+													<th>Data Type</th>
+													<th>Length</th>
+													<th>Nullable</th>
+													<th>Identity</th>
+													<th>Display Name</th>
+													<th>Show In Grid</th>
+													<th>Show In Filter</th>
+													<th>Is Foreign Key</th>
+												</tr>
+											</thead>
+											<tbody ng-show="displayedCollection.length > 0">
+												<tr ng-repeat="item in displayedCollection">
+													<td>{{item.COLUMN_NAME}}</td>
+													<td>{{item.DATA_TYPE}}</td>
+													<td><input type="text" class="form-control input-sm" disabled="disabled" value="{{item.CHARACTER_MAXIMUM_LENGTH}}" /> </td>
+													<td>
+														<span style="{{item.IS_NULLABLE=='NO'?'font-weight:bold;':''}}">{{item.IS_NULLABLE}}</span>
+													</td>
+													<td>
+														<span style="{{item.IS_IDENTITY=='TRUE'?'font-weight:bold;':''}}">{{item.IS_IDENTITY}}</span>
+													</td>
+													<td>
+														<input type="text" ng-disabled='{{item.DISPLAY_NAME==""}}' class="form-control input-sm" ng-model="item.DISPLAY_NAME" />
+													</td>
+													<td>
+														<select ng-model="item.SHOW_AS" class="form-control"
+																ng-disabled="{{item.SHOW_AS=='Disabled'}}"
+																ng-options="itm for itm in ShowAs"
+																required=""></select>
+													</td>
+													<td>
+														<select ng-model="item.SHOW_IN_FILTER" class="form-control"
+																ng-disabled="{{item.SHOW_IN_FILTER=='False'}}"
+																required="">
+															<option value="True">True</option>
+															<option value="False">False</option>
+														</select>
+													</td>
+													<td>{{(item.IsForeignKey==1)?"True":"False"}}</td>
+												</tr>
+										</table>
+									</div>
+									<div class="box-footer">
+										<button type="submit" ng-click="GenerateCode();" ng-disabled="tblColumns.length==0" class="btn btn-primary">Generate!!</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="panel box box-success">
+								<div class="box-header with-border">
+									<h4 class="box-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+											Result Set
+										</a>
+									</h4>
+								</div>
+								<div id="collapseThree" class="panel-collapse collapse">
+									<div class="box-body">
+										<form role="form">
+
+											<!-- textarea -->
+											<div class="form-group has-success">
+												<label>GET SP</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.SP_GET"></textarea>
+											</div>
+
+											<div class="form-group has-success">
+												<label>Update SP</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.SP_UPDATE"></textarea>
+											</div>
+
+											<div class="form-group has-success">
+												<label>Model Page</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.MODEL_PAGE"></textarea>
+											</div>
+
+											<div class="form-group has-success">
+												<label>ASP.NET Controller Page</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.CONTROLLER_PAGE"></textarea>
+											</div>
+
+											<div class="form-group has-success">
+												<label>ASP.NET Service Page</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.SERVICE_PAGE"></textarea>
+											</div>
+
+											<div class="form-group has-success">
+												<label>HTML Page</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.HTML_PAGE"></textarea>
+											</div>
+
+											<div class="form-group has-success">
+												<label>Angular Controller Page</label>
+												<textarea class="form-control" rows="12" ng-model="CodeResult.ANG_CONTROLLER"></textarea>
+											</div>
+
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- /.box-body -->
+
+					<div class="overlay" ng-show="loading">
+						<i class="fa fa-refresh fa-spin"></i>
+					</div>
+				</div><!-- /.box -->  
+			</div>
+		</div>
+	</section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+
+
+@section Scripts {
+	<script src="~/lib/angController/CodeGen/CodeGenController.js"></script>
+} 
